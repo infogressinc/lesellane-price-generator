@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesellane 행사 가격표 생성기</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #f2f2f2;
+      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      color: #111;
+    }
+
+    .control-panel {
+      max-width: 1200px;
+      margin: 24px auto 16px;
+      padding: 18px 22px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .control-panel label {
+      font-size: 15px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+
+    .control-panel input {
+      width: 130px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: right;
+    }
+
+    button {
+      padding: 11px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #37474f;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover { background: #263238; }
+
+    .preview-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding: 0 20px 40px;
+    }
+
+    #capture {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      margin: 0 auto;
+      background-image: url("price-bg.png");
+      background-size: 1920px 1080px;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform-origin: top center;
+    }
+
+    .price-label {
+      position: absolute;
+      width: 150px;
+      text-align: center;
+      font-size: 19px;
+      font-weight: 800;
+      color: #d82929;
+      line-height: 1;
+    }
+
+    .cell {
+      position: absolute;
+      width: 316px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: 500;
+      color: #111;
+      letter-spacing: -0.8px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1200px) {
+      #capture {
+        transform: scale(0.6);
+        margin-bottom: -430px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .control-panel {
+        margin: 12px;
+        padding: 14px;
+        justify-content: flex-start;
+      }
+
+      .control-panel input {
+        width: 110px;
+      }
+
+      #capture {
+        transform: scale(0.45);
+        margin-left: -520px;
+        margin-bottom: -590px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="control-panel">
+    <label>르셀란 600</label>
+    <input id="price0" type="text" inputmode="numeric" placeholder="23500">
+
+    <label>세디먼트 600</label>
+    <input id="price1" type="text" inputmode="numeric" placeholder="25500">
+
+    <label>르셀란 1200</label>
+    <input id="price2" type="text" inputmode="numeric" placeholder="115000">
+
+    <label>세디먼트 1200</label>
+    <input id="price3" type="text" inputmode="numeric" placeholder="125000">
+
+    <button onclick="calculate()">계산하기</button>
+    <button onclick="downloadImage()">이미지 다운로드</button>
+    <button onclick="resetAll()">초기화</button>
+  </div>
+
+  <div class="preview-wrap">
+    <div id="capture">
+      <div id="productPrice0" class="price-label" style="left:125px; top:435px;"></div>
+      <div id="productPrice1" class="price-label" style="left:125px; top:624px;"></div>
+      <div id="productPrice2" class="price-label" style="left:125px; top:813px;"></div>
+      <div id="productPrice3" class="price-label" style="left:125px; top:1002px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const qtyTable = [
+      [
+        [70, 75, 90, 103],
+        [82, 96, 109, 124],
+        [90, 106, 117, 138],
+      ],
+      [
+        [70, 75, 90, 103],
+        [82, 96, 109, 124],
+        [90, 106, 117, 138],
+      ],
+      [
+        [17, 21, 23, 29],
+        [21, 24, 26, 35],
+        [23, 27, 29, 37],
+      ],
+      [
+        [17, 21, 23, 29],
+        [21, 24, 26, 35],
+        [23, 27, 29, 37],
+      ],
+    ];
+
+    const rowTop = [
+      [300, 356, 412],
+      [490, 546, 602],
+      [680, 736, 792],
+      [870, 926, 982],
+    ];
+
+    const colLeft = [487, 835, 1183, 1531];
+
+    function onlyNumber(value) {
+      return Number(String(value).replace(/[^0-9]/g, ""));
+    }
+
+    function comma(num) {
+      return num.toLocaleString("ko-KR");
+    }
+
+    function formatPrice(price) {
+      if (!price) return "";
+      return `(₩ ${comma(price)})`;
+    }
+
+    function calculate() {
+      clearCells();
+
+      for (let product = 0; product < 4; product++) {
+        const price = onlyNumber(document.getElementById(`price${product}`).value);
+
+        const label = document.getElementById(`productPrice${product}`);
+        label.textContent = price ? formatPrice(price) : "";
+
+        if (!price) continue;
+
+        for (let r = 0; r < 3; r++) {
+          for (let c = 0; c < 4; c++) {
+            const qty = qtyTable[product][r][c];
+            const total = qty * price;
+
+            const div = document.createElement("div");
+            div.className = "cell calc-cell";
+            div.style.left = `${colLeft[c]}px`;
+            div.style.top = `${rowTop[product][r]}px`;
+            div.textContent = `${qty}장 (${comma(total)}원)`;
+
+            document.getElementById("capture").appendChild(div);
+          }
+        }
+      }
+    }
+
+    function clearCells() {
+      document.querySelectorAll(".calc-cell").forEach(el => el.remove());
+    }
+
+    function resetAll() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`price${i}`).value = "";
+        document.getElementById(`productPrice${i}`).textContent = "";
+      }
+      clearCells();
+    }
+
+    async function downloadImage() {
+      calculate();
+
+      const target = document.getElementById("capture");
+
+      const canvas = await html2canvas(target, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: null,
+        width: 1920,
+        height: 1080,
+        windowWidth: 1920,
+        windowHeight: 1080
+      });
+
+      const link = document.createElement("a");
+      link.download = "lesellane-price-table.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    document.querySelectorAll("input").forEach(input => {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^0-9]/g, "");
+        calculate();
+      });
+    });
+  </script>
+
+</body>
+</html>

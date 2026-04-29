@@ -70,21 +70,30 @@
       width: 1920px;
       height: 1080px;
       margin: 0 auto;
-      background-image: url("price1-bg_v2.png");
-      background-size: 1920px 1080px;
-      background-repeat: no-repeat;
-      background-position: center;
       transform-origin: top center;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .bg-image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      object-fit: contain;
+      z-index: 0;
     }
 
     .price-label {
       position: absolute;
-      width: 150px;
+      width: 166px;
       text-align: center;
       font-size: 19px;
       font-weight: 800;
       color: #d82929;
       line-height: 1;
+      z-index: 2;
     }
 
     .cell {
@@ -99,6 +108,7 @@
       color: #111;
       letter-spacing: -0.8px;
       white-space: nowrap;
+      z-index: 2;
     }
 
     @media (max-width: 1200px) {
@@ -150,10 +160,12 @@
 
   <div class="preview-wrap">
     <div id="capture">
-      <div id="productPrice0" class="price-label" style="left:125px; top:435px;"></div>
-      <div id="productPrice1" class="price-label" style="left:125px; top:624px;"></div>
-      <div id="productPrice2" class="price-label" style="left:125px; top:813px;"></div>
-      <div id="productPrice3" class="price-label" style="left:125px; top:1002px;"></div>
+      <img src="price1-bg_v2.png" class="bg-image" alt="">
+
+      <div id="productPrice0" class="price-label" style="left:87px; top:435px;"></div>
+      <div id="productPrice1" class="price-label" style="left:87px; top:624px;"></div>
+      <div id="productPrice2" class="price-label" style="left:87px; top:813px;"></div>
+      <div id="productPrice3" class="price-label" style="left:87px; top:1002px;"></div>
     </div>
   </div>
 
@@ -249,9 +261,9 @@
       const target = document.getElementById("capture");
 
       const canvas = await html2canvas(target, {
-        scale: 3,
+        scale: 4,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: "#ffffff",
         width: 1920,
         height: 1080,
         windowWidth: 1920,

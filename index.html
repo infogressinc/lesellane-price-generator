@@ -235,33 +235,168 @@
       line-height: 1.55;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 12px 8px 28px;
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 26px;
+        margin-top: 6px;
+      }
+
+      .sub {
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+
+      .control-panel {
+        padding: 12px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+      }
+
+      .price-inputs {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .input-card {
+        padding: 12px 8px;
+      }
+
+      .input-card h3 {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .input-card p {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .input-row {
+        gap: 5px;
+      }
+
+      .input-row input {
+        padding: 8px;
+        font-size: 16px;
+      }
+
+      .input-row span {
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 11px 16px;
+      }
+
+      .btn-row {
+        gap: 8px;
+      }
+
+      #capture {
+        padding: 8px;
+        border-radius: 12px;
+        overflow-x: auto;
+      }
+
+      .table-title {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .product-block {
+        grid-template-columns: 105px 1fr;
+        margin-bottom: 7px;
+        border-radius: 8px;
+      }
+
+      .product-side {
+        padding: 8px 5px;
+        border-right: 1px solid #cbd7e6;
+        border-bottom: none;
+      }
+
+      .product-side h2 {
+        font-size: 17px;
+      }
+
+      .product-side .spec {
+        font-size: 9px;
+        margin-top: 5px;
+      }
+
+      .price-box {
+        margin-top: 7px;
+        padding: 6px 8px;
+      }
+
+      .price-box .label {
+        font-size: 9px;
+        margin-bottom: 3px;
+      }
+
+      .price-box .price {
+        font-size: 14px;
+      }
+
+      table {
+        min-width: 560px;
+      }
+
+      th, td {
+        font-size: 11px;
+        padding: 5px 3px;
+      }
+
+      .space {
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .total-inline {
+        font-size: 10.5px;
+        letter-spacing: -0.7px;
+      }
+
+      .notice {
+        font-size: 11px;
+        padding: 8px 10px;
+        line-height: 1.45;
+      }
+    }
+
+    @media (max-width: 430px) {
       .price-inputs {
         grid-template-columns: 1fr 1fr;
       }
 
+      .input-card h3 {
+        font-size: 20px;
+      }
+
       .product-block {
-        grid-template-columns: 1fr;
-      }
-
-      .product-side {
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-      }
-
-      #capture {
-        overflow-x: auto;
+        grid-template-columns: 95px 1fr;
       }
 
       table {
-        min-width: 860px;
+        min-width: 530px;
       }
-    }
 
-    @media (max-width: 560px) {
-      h1 { font-size: 30px; }
-      .price-inputs { grid-template-columns: 1fr; }
-      button { width: 100%; }
+      th, td {
+        font-size: 10.5px;
+        padding: 4px 2px;
+      }
+
+      .total-inline {
+        font-size: 10px;
+      }
     }
   </style>
 </head>

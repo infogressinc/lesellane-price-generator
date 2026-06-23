@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lesellane 행사 가격표 생성기</title>
+  <title>LESELLANE 행사 가격표 생성기</title>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
@@ -12,247 +12,459 @@
 
     body {
       margin: 0;
-      background: #f2f2f2;
-      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: linear-gradient(135deg, #eef4fb, #f7f7f7);
+      font-family: Arial, "Noto Sans KR", sans-serif;
       color: #111;
+    }
+
+    .wrap {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 40px;
+      margin: 10px 0 8px;
+      letter-spacing: -1px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 24px;
     }
 
     .control-panel {
-      max-width: 1200px;
-      margin: 24px auto 16px;
-      padding: 18px 22px;
       background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
     }
 
-    .control-panel label {
+    .price-inputs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .input-card {
+      border: 1px solid #d9dfe7;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .input-card.active {
+      border-color: #1f6feb;
+      background: #f7fbff;
+    }
+
+    .input-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .input-card p {
+      margin: 0 0 14px;
       font-size: 15px;
-      font-weight: 700;
-      margin-right: 4px;
     }
 
-    .control-panel input {
-      width: 130px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #bbb;
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-row input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
       border-radius: 8px;
+      font-size: 18px;
       text-align: right;
     }
 
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     button {
-      padding: 11px 18px;
       border: none;
-      border-radius: 8px;
-      background: #37474f;
+      border-radius: 10px;
       color: #fff;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 700;
+      padding: 14px 42px;
       cursor: pointer;
     }
 
-    button:hover { background: #263238; }
-
-    .preview-wrap {
-      width: 100%;
-      overflow-x: auto;
-      padding: 0 20px 40px;
-    }
+    .btn-calc { background: #0050a4; }
+    .btn-download { background: #0b9444; }
+    .btn-reset { background: #666; }
 
     #capture {
-      position: relative;
-      width: 1920px;
-      height: 1080px;
-      margin: 0 auto;
-      transform-origin: top center;
-      background: #ffffff;
-      overflow: hidden;
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
     }
 
-    .bg-image {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 1920px;
-      height: 1080px;
-      object-fit: contain;
-      z-index: 0;
-    }
-
-    .price-label {
-      position: absolute;
-      width: 166px;
+    .table-title {
       text-align: center;
-      font-size: 19px;
+      font-size: 26px;
       font-weight: 800;
-      color: #d82929;
-      line-height: 1;
-      z-index: 2;
+      margin: 0 0 18px;
     }
 
-    .cell {
-      position: absolute;
-      width: 316px;
-      height: 56px;
+    .product-block {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      border: 1px solid #cbd7e6;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .product-side {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      font-size: 25px;
-      font-weight: 500;
-      color: #111;
-      letter-spacing: -0.8px;
-      white-space: nowrap;
-      z-index: 2;
+      align-items: center;
+      padding: 20px 12px;
+      text-align: center;
+      border-right: 1px solid #cbd7e6;
     }
 
-    @media (max-width: 1200px) {
+    .product-side h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .product-side .spec {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .price-box {
+      margin-top: 22px;
+      border: 1px solid #cbd7e6;
+      border-radius: 8px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.7);
+    }
+
+    .price-box .label {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .price-box .price {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      text-align: center;
+      padding: 12px 8px;
+      font-size: 17px;
+    }
+
+    th:last-child, td:last-child { border-right: none; }
+    tr:last-child td { border-bottom: none; }
+
+    th {
+      font-weight: 800;
+      background: rgba(255,255,255,0.55);
+    }
+
+    .space {
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .qty {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+
+    .total {
+      color: #d90000;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .blue { background: linear-gradient(90deg, #edf6ff, #fff); border-color: #9bc3f5; }
+    .blue .product-side { background: #edf6ff; border-color: #9bc3f5; }
+    .blue h2, .blue .price { color: #004b9b; }
+
+    .green { background: linear-gradient(90deg, #effaf1, #fff); border-color: #9cd6a8; }
+    .green .product-side { background: #effaf1; border-color: #9cd6a8; }
+    .green h2, .green .price { color: #0b6f2a; }
+
+    .orange { background: linear-gradient(90deg, #fff6ed, #fff); border-color: #f0bf91; }
+    .orange .product-side { background: #fff6ed; border-color: #f0bf91; }
+    .orange h2, .orange .price { color: #c04f00; }
+
+    .purple { background: linear-gradient(90deg, #f5f0ff, #fff); border-color: #bda9ed; }
+    .purple .product-side { background: #f5f0ff; border-color: #bda9ed; }
+    .purple h2, .purple .price { color: #4b249c; }
+
+    .notice {
+      border: 1px solid #b7d2f0;
+      background: #f4f9ff;
+      border-radius: 8px;
+      padding: 15px 22px;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .price-inputs {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .product-block {
+        grid-template-columns: 1fr;
+      }
+
+      .product-side {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+
       #capture {
-        transform: scale(0.6);
-        margin-bottom: -430px;
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 760px;
       }
     }
 
-    @media (max-width: 760px) {
-      .control-panel {
-        margin: 12px;
-        padding: 14px;
-        justify-content: flex-start;
-      }
-
-      .control-panel input {
-        width: 110px;
-      }
-
-      #capture {
-        transform: scale(0.45);
-        margin-left: -520px;
-        margin-bottom: -590px;
-      }
+    @media (max-width: 560px) {
+      h1 { font-size: 30px; }
+      .price-inputs { grid-template-columns: 1fr; }
+      button { width: 100%; }
     }
   </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <h1>LESELLANE 행사 가격표 생성기</h1>
+    <p class="sub">판매가격 입력 시 예상장수 기준으로 총 금액이 자동 계산됩니다.</p>
 
-  <div class="control-panel">
-    <label>르셀란 600</label>
-    <input id="price0" type="text" inputmode="numeric" placeholder="23500">
+    <div class="control-panel">
+      <div class="price-inputs">
+        <div class="input-card active">
+          <h3>르셀란 750</h3>
+          <p>판매가 (원/장)</p>
+          <div class="input-row">
+            <input id="priceLes750" type="text" inputmode="numeric" placeholder="예: 41000">
+            <span>원 / 장</span>
+          </div>
+        </div>
 
-    <label>세디먼트 600</label>
-    <input id="price1" type="text" inputmode="numeric" placeholder="25500">
+        <div class="input-card">
+          <h3>르셀란 1300</h3>
+          <p>판매가 (원/장)</p>
+          <div class="input-row">
+            <input id="priceLes1300" type="text" inputmode="numeric" placeholder="예: 137000">
+            <span>원 / 장</span>
+          </div>
+        </div>
 
-    <label>르셀란 1200</label>
-    <input id="price2" type="text" inputmode="numeric" placeholder="115000">
+        <div class="input-card">
+          <h3>리퍼브 750</h3>
+          <p>판매가 (원/장)</p>
+          <div class="input-row">
+            <input id="priceRef750" type="text" inputmode="numeric" placeholder="예: 35000">
+            <span>원 / 장</span>
+          </div>
+        </div>
 
-    <label>세디먼트 1200</label>
-    <input id="price3" type="text" inputmode="numeric" placeholder="125000">
+        <div class="input-card">
+          <h3>리퍼브 1300</h3>
+          <p>판매가 (원/장)</p>
+          <div class="input-row">
+            <input id="priceRef1300" type="text" inputmode="numeric" placeholder="예: 110000">
+            <span>원 / 장</span>
+          </div>
+        </div>
+      </div>
 
-    <button onclick="calculate()">계산하기</button>
-    <button onclick="downloadImage()">이미지 다운로드</button>
-    <button onclick="resetAll()">초기화</button>
-  </div>
+      <div class="btn-row">
+        <button class="btn-calc" onclick="calculate()">계산하기</button>
+        <button class="btn-download" onclick="downloadImage()">이미지 다운로드</button>
+        <button class="btn-reset" onclick="resetAll()">초기화</button>
+      </div>
+    </div>
 
-  <div class="preview-wrap">
     <div id="capture">
-      <img src="price1-bg_v2.png" class="bg-image" alt="">
+      <h2 class="table-title">예상장수 기준 총 금액</h2>
 
-      <div id="productPrice0" class="price-label" style="left:87px; top:435px;"></div>
-      <div id="productPrice1" class="price-label" style="left:87px; top:624px;"></div>
-      <div id="productPrice2" class="price-label" style="left:87px; top:813px;"></div>
-      <div id="productPrice3" class="price-label" style="left:87px; top:1002px;"></div>
+      <div id="tableArea"></div>
+
+      <div class="notice">
+        <div>• 판매가는 장당 가격 (원/장) 기준이며, 부가세는 포함되어 있지 않습니다.</div>
+        <div>• 예상장수는 고정값이며, 실제 현장 상황에 따라 변동될 수 있습니다.</div>
+      </div>
     </div>
   </div>
 
   <script>
-    const qtyTable = [
-      [
-        [70, 75, 90, 103],
-        [82, 96, 109, 124],
-        [90, 106, 117, 138],
-      ],
-      [
-        [70, 75, 90, 103],
-        [82, 96, 109, 124],
-        [90, 106, 117, 138],
-      ],
-      [
-        [17, 21, 23, 29],
-        [21, 24, 26, 35],
-        [23, 27, 29, 37],
-      ],
-      [
-        [17, 21, 23, 29],
-        [21, 24, 26, 35],
-        [23, 27, 29, 37],
-      ],
+    const products = [
+      {
+        id: "priceLes750",
+        name: "르셀란<br>750",
+        title: "르셀란 750",
+        spec: "(750 x 750 x 24, tpu)",
+        colorClass: "blue",
+        qty: [
+          [59, 65, 71, 83],
+          [50, 59, 65, 75],
+          [43, 50, 55, 65]
+        ]
+      },
+      {
+        id: "priceLes1300",
+        name: "르셀란<br>1300",
+        title: "르셀란 1300",
+        spec: "(1,300 x 1,300 x 24, pu)",
+        colorClass: "green",
+        qty: [
+          [21, 23, 25, 30],
+          [18, 21, 22, 27],
+          [14, 16, 18, 22]
+        ]
+      },
+      {
+        id: "priceRef750",
+        name: "리퍼브<br>750",
+        title: "리퍼브 750",
+        spec: "(750 x 750 x 24, tpu)",
+        colorClass: "orange",
+        qty: [
+          [59, 65, 71, 83],
+          [50, 59, 65, 75],
+          [43, 50, 55, 65]
+        ]
+      },
+      {
+        id: "priceRef1300",
+        name: "리퍼브<br>1300",
+        title: "리퍼브 1300",
+        spec: "(1,300 x 1,300 x 24, pu)",
+        colorClass: "purple",
+        qty: [
+          [21, 23, 25, 30],
+          [18, 21, 22, 27],
+          [14, 16, 18, 22]
+        ]
+      }
     ];
 
-    const rowTop = [
-      [300, 356, 412],
-      [490, 546, 602],
-      [680, 736, 792],
-      [870, 926, 982],
+    const spaces = [
+      "거실,복도",
+      "거실,복도,<br>아일랜드",
+      "거실,복도,주방"
     ];
 
-    const colLeft = [487, 835, 1183, 1531];
+    const columns = [
+      "24평 (59 Type)",
+      "30평 (75 Type)",
+      "34평 (84 Type)",
+      "40평 (98 Type)"
+    ];
 
     function onlyNumber(value) {
       return Number(String(value).replace(/[^0-9]/g, ""));
     }
 
     function comma(num) {
-      return num.toLocaleString("ko-KR");
-    }
-
-    function formatPrice(price) {
-      if (!price) return "";
-      return `(₩ ${comma(price)})`;
+      return Number(num).toLocaleString("ko-KR");
     }
 
     function calculate() {
-      clearCells();
+      const tableArea = document.getElementById("tableArea");
+      tableArea.innerHTML = "";
 
-      for (let product = 0; product < 4; product++) {
-        const price = onlyNumber(document.getElementById(`price${product}`).value);
+      products.forEach(product => {
+        const price = onlyNumber(document.getElementById(product.id).value);
 
-        const label = document.getElementById(`productPrice${product}`);
-        label.textContent = price ? formatPrice(price) : "";
+        const block = document.createElement("div");
+        block.className = `product-block ${product.colorClass}`;
 
-        if (!price) continue;
+        let html = `
+          <div class="product-side">
+            <h2>${product.name}</h2>
+            <div class="spec">${product.spec}</div>
+            <div class="price-box">
+              <div class="label">판매가(원/장)</div>
+              <div class="price">${price ? comma(price) : "-"}</div>
+            </div>
+          </div>
 
-        for (let r = 0; r < 3; r++) {
-          for (let c = 0; c < 4; c++) {
-            const qty = qtyTable[product][r][c];
-            const total = qty * price;
+          <table>
+            <thead>
+              <tr>
+                <th>시공공간</th>
+                ${columns.map(col => `<th>${col}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+        `;
 
-            const div = document.createElement("div");
-            div.className = "cell calc-cell";
-            div.style.left = `${colLeft[c]}px`;
-            div.style.top = `${rowTop[product][r]}px`;
-            div.textContent = `${qty}장 (${comma(total)}원)`;
+        product.qty.forEach((row, rowIndex) => {
+          html += `<tr><td class="space">${spaces[rowIndex]}</td>`;
 
-            document.getElementById("capture").appendChild(div);
-          }
-        }
-      }
-    }
+          row.forEach(qty => {
+            const total = price ? qty * price : 0;
 
-    function clearCells() {
-      document.querySelectorAll(".calc-cell").forEach(el => el.remove());
+            html += `
+              <td>
+                <div class="qty">${qty}장</div>
+                <div class="total">${price ? comma(total) + "원" : "-"}</div>
+              </td>
+            `;
+          });
+
+          html += `</tr>`;
+        });
+
+        html += `
+            </tbody>
+          </table>
+        `;
+
+        block.innerHTML = html;
+        tableArea.appendChild(block);
+      });
     }
 
     function resetAll() {
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`price${i}`).value = "";
-        document.getElementById(`productPrice${i}`).textContent = "";
-      }
-      clearCells();
+      products.forEach(product => {
+        document.getElementById(product.id).value = "";
+      });
+      calculate();
     }
 
     async function downloadImage() {
@@ -261,13 +473,9 @@
       const target = document.getElementById("capture");
 
       const canvas = await html2canvas(target, {
-        scale: 4,
+        scale: 3,
         useCORS: true,
-        backgroundColor: "#ffffff",
-        width: 1920,
-        height: 1080,
-        windowWidth: 1920,
-        windowHeight: 1080
+        backgroundColor: "#ffffff"
       });
 
       const link = document.createElement("a");
@@ -282,7 +490,8 @@
         calculate();
       });
     });
-  </script>
 
+    calculate();
+  </script>
 </body>
 </html>

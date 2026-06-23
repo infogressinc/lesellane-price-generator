@@ -670,37 +670,40 @@
       calculate();
     }
 
-    async function downloadImage() {
-      calculate();
+async function downloadImage() {
+  calculate();
 
-      const original = document.getElementById("capture");
-      const clone = original.cloneNode(true);
+  const original = document.getElementById("capture");
+  const clone = original.cloneNode(true);
 
-      clone.classList.add("download-capture");
-      clone.style.position = "absolute";
-      clone.style.left = "-9999px";
-      clone.style.top = "0";
-      clone.style.background = "#ffffff";
+  clone.classList.add("download-capture");
+  clone.style.position = "absolute";
+  clone.style.left = "-9999px";
+  clone.style.top = "0";
+  clone.style.background = "#ffffff";
+  clone.style.paddingBottom = "40px";
 
-      document.body.appendChild(clone);
+  document.body.appendChild(clone);
 
-      const canvas = await html2canvas(clone, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        width: clone.scrollWidth,
-        height: clone.scrollHeight,
-        windowWidth: clone.scrollWidth,
-        windowHeight: clone.scrollHeight
-      });
+  await new Promise(resolve => setTimeout(resolve, 300));
 
-      document.body.removeChild(clone);
+  const canvas = await html2canvas(clone, {
+    scale: 3,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    width: clone.scrollWidth,
+    height: clone.scrollHeight + 80,
+    windowWidth: clone.scrollWidth,
+    windowHeight: clone.scrollHeight + 80
+  });
 
-      const link = document.createElement("a");
-      link.download = "lesellane-price-table.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    }
+  document.body.removeChild(clone);
+
+  const link = document.createElement("a");
+  link.download = "lesellane-price-table.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
 
     document.querySelectorAll("input").forEach(input => {
       input.addEventListener("input", () => {

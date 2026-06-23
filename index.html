@@ -235,6 +235,75 @@
       line-height: 1.55;
     }
 
+    /* 다운로드 전용: 모바일에서도 PC형 전체 폭으로 캡처 */
+    .download-capture {
+      width: 1200px !important;
+      max-width: 1200px !important;
+      overflow: visible !important;
+      transform: none !important;
+      background: #ffffff !important;
+      border-radius: 16px !important;
+      padding: 18px !important;
+      box-shadow: none !important;
+    }
+
+    .download-capture table {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed !important;
+    }
+
+    .download-capture .product-block {
+      grid-template-columns: 185px 1fr !important;
+      margin-bottom: 10px !important;
+    }
+
+    .download-capture .product-side {
+      padding: 12px 10px !important;
+      border-right: 1px solid #cbd7e6 !important;
+      border-bottom: none !important;
+    }
+
+    .download-capture .product-side h2 {
+      font-size: 24px !important;
+    }
+
+    .download-capture .product-side .spec {
+      font-size: 13px !important;
+    }
+
+    .download-capture .price-box .label {
+      font-size: 13px !important;
+    }
+
+    .download-capture .price-box .price {
+      font-size: 20px !important;
+    }
+
+    .download-capture th,
+    .download-capture td {
+      font-size: 16px !important;
+      padding: 8px 6px !important;
+    }
+
+    .download-capture .space {
+      font-size: 16px !important;
+      white-space: nowrap !important;
+      letter-spacing: -0.4px !important;
+    }
+
+    .download-capture .total-inline {
+      font-size: 16px !important;
+      white-space: nowrap !important;
+      letter-spacing: -0.4px !important;
+    }
+
+    .download-capture .notice {
+      font-size: 15px !important;
+      padding: 12px 18px !important;
+      line-height: 1.55 !important;
+    }
+
     @media (max-width: 768px) {
       .wrap {
         padding: 12px 8px 28px;
@@ -303,6 +372,7 @@
       #capture {
         padding: 8px;
         border-radius: 12px;
+        overflow: hidden;
       }
 
       .table-title {
@@ -311,7 +381,7 @@
       }
 
       .product-block {
-        grid-template-columns: 105px 1fr;
+        grid-template-columns: 90px 1fr;
         margin-bottom: 7px;
         border-radius: 8px;
       }
@@ -323,11 +393,11 @@
       }
 
       .product-side h2 {
-        font-size: 17px;
+        font-size: 16px;
       }
 
       .product-side .spec {
-        font-size: 9px;
+        font-size: 8px;
         margin-top: 5px;
       }
 
@@ -337,67 +407,33 @@
       }
 
       .price-box .label {
-        font-size: 9px;
+        font-size: 8px;
         margin-bottom: 3px;
       }
 
       .price-box .price {
-        font-size: 14px;
+        font-size: 13px;
       }
 
-     table {
-  min-width: 0;
-  width: 100%;
-}
-
-.product-block {
-  grid-template-columns: 90px 1fr;
-}
-
-th, td {
-  font-size: 9px;
-  padding: 4px 1px;
-}
-
-.space {
-  font-size: 9px;
-  letter-spacing: -1px;
-}
-
-.total-inline {
-  font-size: 8.5px;
-  letter-spacing: -1px;
-}
-
-.product-side h2 {
-  font-size: 16px;
-}
-
-.product-side .spec {
-  font-size: 8px;
-}
-
-.price-box .label {
-  font-size: 8px;
-}
-
-.price-box .price {
-  font-size: 13px;
-}
+      table {
+        min-width: 0;
+        width: 100%;
+      }
 
       th, td {
-        font-size: 11px;
-        padding: 5px 3px;
+        font-size: 9px;
+        padding: 4px 1px;
       }
 
       .space {
-        font-size: 11px;
+        font-size: 9px;
+        letter-spacing: -1px;
         white-space: nowrap;
       }
 
       .total-inline {
-        font-size: 10.5px;
-        letter-spacing: -0.7px;
+        font-size: 8.5px;
+        letter-spacing: -1px;
       }
 
       .notice {
@@ -417,16 +453,20 @@ th, td {
       }
 
       .product-block {
-        grid-template-columns: 95px 1fr;
+        grid-template-columns: 85px 1fr;
       }
 
       th, td {
-        font-size: 10.5px;
-        padding: 4px 2px;
+        font-size: 8.5px;
+        padding: 4px 1px;
       }
 
       .total-inline {
-        font-size: 10px;
+        font-size: 8px;
+      }
+
+      .space {
+        font-size: 8.5px;
       }
     }
   </style>
@@ -633,13 +673,28 @@ th, td {
     async function downloadImage() {
       calculate();
 
-      const target = document.getElementById("capture");
+      const original = document.getElementById("capture");
+      const clone = original.cloneNode(true);
 
-      const canvas = await html2canvas(target, {
+      clone.classList.add("download-capture");
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      clone.style.top = "0";
+      clone.style.background = "#ffffff";
+
+      document.body.appendChild(clone);
+
+      const canvas = await html2canvas(clone, {
         scale: 3,
         useCORS: true,
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        width: clone.scrollWidth,
+        height: clone.scrollHeight,
+        windowWidth: clone.scrollWidth,
+        windowHeight: clone.scrollHeight
       });
+
+      document.body.removeChild(clone);
 
       const link = document.createElement("a");
       link.download = "lesellane-price-table.png";
